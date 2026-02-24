@@ -221,6 +221,7 @@
 
 
 
+from backend.app.database import init_db
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import get_settings
@@ -271,6 +272,8 @@ print("✓ Application routes loaded")
 def startup():
     print(f"Starting in {settings.ENVIRONMENT} mode")
     print(f"Database URL: {settings.database_url_fixed[:20]}...")
+    init_db()  # Ensure database is initialized on startup  
+    print("✓ Database tables created/verified")
 
 @app.get("/")
 def root():
