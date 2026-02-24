@@ -260,12 +260,12 @@ export const getApiUrl = () => API_BASE_URL;
 // AUTH APIs
 // ============================================
 
-export const registerUser = async (userData) => {
+export const register = async (userData) => {
   const response = await api.post('/auth/register', userData);
   return response.data;
 };
 
-export const loginUser = async (credentials) => {
+export const login = async (credentials) => {
   const response = await api.post('/auth/login', credentials);
   return response.data;
 };
