@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Briefcase, AlertCircle, Building2 } from 'lucide-react';
 import { loginCompany } from '../services/api';
 
+import { IoArrowBackSharp } from "react-icons/io5";
+
 const HRLogin = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -38,6 +40,9 @@ const HRLogin = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-gray-900 via-black to-gray-900">
+        <button onClick={() => navigate(-1)} className="absolute top-4 left-4 text-red-500 hover:text-red-400">
+          <IoArrowBackSharp className="h-6 w-6" />
+          </button>
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -123,8 +128,8 @@ const HRLogin = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-400">
               Looking for a job?{' '}
-              <Link to="/login" className="text-red-400 font-semibold hover:text-red-300 transition-colors">
-                Candidate Login
+              <Link to="/hr/register" className="text-red-400 font-semibold hover:text-red-300 transition-colors">
+                Don't have an account? Register here.
               </Link>
             </p>
           </div>

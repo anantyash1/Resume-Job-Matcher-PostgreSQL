@@ -1,6 +1,6 @@
 # File Tree: resume-job-matcher
 
-**Generated:** 2/6/2026, 9:27:58 PM
+**Generated:** 2/12/2026, 1:39:05 PM
 **Root Path:** `e:\resume-job-matcher`
 
 ```
@@ -8,7 +8,9 @@
 │   ├── 📁 app
 │   │   ├── 📁 routes
 │   │   │   ├── 🐍 __init__.py
+│   │   │   ├── 🐍 applications.py
 │   │   │   ├── 🐍 auth.py
+│   │   │   ├── 🐍 hr.py
 │   │   │   ├── 🐍 jobs.py
 │   │   │   └── 🐍 resume.py
 │   │   ├── 📁 services
@@ -19,6 +21,7 @@
 │   │   ├── 📁 utils
 │   │   │   ├── 🐍 __init__.py
 │   │   │   └── 🐍 helpers.py
+│   │   ├── 📝 Untitled-1.md
 │   │   ├── 🐍 __init__.py
 │   │   ├── 🐍 auth.py
 │   │   ├── 🐍 config.py
@@ -29,8 +32,11 @@
 │   ├── 📁 data
 │   │   └── ⚙️ sample_jobs.json
 │   ├── 📁 uploads
-│   ├── 📄 requirements.txt
-│   └── 📄 resume_matcher.db
+│   │   ├── 📕 1_AnantResume (3).pdf
+│   │   ├── 📘 1_Piyush_Resume2.docx
+│   │   ├── 📕 2_AnantResume (3).pdf
+│   │   └── 📕 2_Piyush_Resume2.pdf
+│   └── 📄 requirements.txt
 ├── 📁 frontend
 │   ├── 📁 public
 │   │   ├── 📄 favicon.ico
@@ -45,6 +51,8 @@
 │   │   │   └── 📄 ResumeUploader.jsx
 │   │   ├── 📁 pages
 │   │   │   ├── 📄 Dashboard.jsx
+│   │   │   ├── 📄 HRDashboard.jsx
+│   │   │   ├── 📄 HRLogin.jsx
 │   │   │   ├── 📄 Register.jsx
 │   │   │   ├── 📄 landing.jsx
 │   │   │   └── 📄 login.jsx
@@ -62,6 +70,8 @@
 │   ├── ⚙️ package.json
 │   ├── 📄 postcss.config.js
 │   └── 📄 tailwind.config.js
+├── ⚙️ .gitignore
+├── 📝 Untitled-1.md
 ├── ⚙️ package-lock.json
 └── ⚙️ package.json
 ```

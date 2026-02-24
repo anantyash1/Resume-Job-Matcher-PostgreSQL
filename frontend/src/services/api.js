@@ -54,11 +54,11 @@ export const getCurrentCompany = async () => {
   return response.data;
 };
 
-export const getCompanyApplications = async (statusFilter = null) => {
-  const params = statusFilter ? { status_filter: statusFilter } : {};
-  const response = await api.get('/hr/applications', { params });
-  return response.data;
-};
+// export const getCompanyApplications = async (statusFilter = null) => {
+//   const params = statusFilter ? { status_filter: statusFilter } : {};
+//   const response = await api.get('/hr/applications', { params });
+//   return response.data;
+// };
 
 export const updateApplicationStatus = async (applicationId, newStatus) => {
   const response = await api.patch(`/hr/applications/${applicationId}/status`, null, {
@@ -154,6 +154,39 @@ export const downloadResume = async (resumeId, filename) => {
   link.click();
   link.remove();
   
+  return response.data;
+};
+
+
+// Add these new exports to your existing api.js
+
+// HR Job Management
+export const createJob = async (jobData) => {
+  const response = await api.post('/hr/jobs', jobData);
+  return response.data;
+};
+
+export const updateJob = async (jobId, jobData) => {
+  const response = await api.put(`/hr/jobs/${jobId}`, jobData);
+  return response.data;
+};
+
+export const deleteJob = async (jobId) => {
+  const response = await api.delete(`/hr/jobs/${jobId}`);
+  return response.data;
+};
+
+export const getHRJobs = async () => {
+  const response = await api.get('/hr/jobs');
+  return response.data;
+};
+
+// Updated getCompanyApplications with search support
+export const getCompanyApplications = async (statusFilter = null, search = null) => {
+  const params = {};
+  if (statusFilter) params.status_filter = statusFilter;
+  if (search) params.search = search;
+  const response = await api.get('/hr/applications', { params });
   return response.data;
 };
 

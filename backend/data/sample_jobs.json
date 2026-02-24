@@ -280,6 +280,16 @@
     "job_type": "Full-time"
   },
   {
+    "title": "Full Stack Java Developer",
+    "company": "JavaTech Solutions",
+    "company_email": "careers@javatechsolutions.com",
+    "location": "Remote",
+    "description": "Build modern web applications using Java stack. Work with Spring Boot, Hibernate, and PostgreSQL.",
+    "requirements": "3+ years full stack Java development. Expert in Spring Boot and Hibernate. Experience with PostgreSQL and Redis. Knowledge of RESTful APIs and microservices architecture. Understanding of modern Java (Java 8+).",
+    "salary_range": "$105,000 - $140,000",
+    "job_type": "Full-time"
+  },
+  {
     "title": "Computer Vision Engineer",
     "company": "VisionAI Labs",
     "company_email": "careers@visionailabs.com",

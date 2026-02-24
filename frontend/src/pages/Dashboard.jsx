@@ -1,196 +1,18 @@
-// import React, { useState, useEffect } from 'react';
-// import Navbar from '../components/Navbar';
-// import Footer from '../components/Footer';
-// import ResumeUploader from '../components/ResumeUploader';
-// import JobCard from '../components/JobCard';
-// import { getCurrentUser, getMyResumes, getJobRecommendations } from '../services/api';
-// import { Loader, FileText, Briefcase } from 'lucide-react';
-
-// const Dashboard = () => {
-//   const [user, setUser] = useState(null);
-//   const [resumes, setResumes] = useState([]);
-//   const [selectedResume, setSelectedResume] = useState(null);
-//   const [jobs, setJobs] = useState([]);
-//   const [loading, setLoading] = useState(false);
-
-//   useEffect(() => {
-//     loadUserData();
-//   }, []);
-
-//   const loadUserData = async () => {
-//     try {
-//       const userData = await getCurrentUser();
-//       setUser(userData);
-      
-//       const resumesData = await getMyResumes();
-//       setResumes(resumesData);
-      
-//       if (resumesData.length > 0) {
-//         setSelectedResume(resumesData[0]);
-//         loadJobRecommendations(resumesData[0].id);
-//       }
-//     } catch (error) {
-//       console.error('Error loading user data:', error);
-//     }
-//   };
-
-//   const loadJobRecommendations = async (resumeId) => {
-//     setLoading(true);
-//     try {
-//       const recommendations = await getJobRecommendations(resumeId, 10);
-//       setJobs(recommendations);
-//     } catch (error) {
-//       console.error('Error loading job recommendations:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleUploadSuccess = (newResume) => {
-//     setResumes([newResume, ...resumes]);
-//     setSelectedResume(newResume);
-//     loadJobRecommendations(newResume.id);
-//   };
-
-//   const handleResumeChange = (resumeId) => {
-//     const resume = resumes.find(r => r.id === resumeId);
-//     setSelectedResume(resume);
-//     loadJobRecommendations(resumeId);
-//   };
-
-//   return (
-//     <div className="min-h-screen flex flex-col">
-//       <Navbar user={user} />
-
-//       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-//         <div className="mb-8">
-//           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-//             Welcome back, {user?.username}!
-//           </h1>
-//           <p className="text-gray-600">
-//             Upload your resume to get personalized job recommendations
-//           </p>
-//         </div>
-
-//         <div className="grid lg:grid-cols-3 gap-8">
-//           {/* Left Column - Resume Upload & Selection */}
-//           <div className="lg:col-span-1 space-y-6">
-//             <ResumeUploader onUploadSuccess={handleUploadSuccess} />
-
-//             {resumes.length > 0 && (
-//               <div className="card">
-//                 <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
-//                   <FileText className="h-5 w-5 mr-2" />
-//                   Your Resumes
-//                 </h3>
-                
-//                 <div className="space-y-2">
-//                   {resumes.map((resume) => (
-//                     <button
-//                       key={resume.id}
-//                       onClick={() => handleResumeChange(resume.id)}
-//                       className={`w-full text-left p-3 rounded-lg transition-colors ${
-//                         selectedResume?.id === resume.id
-//                           ? 'bg-blue-100 border-2 border-blue-500'
-//                           : 'bg-gray-50 hover:bg-gray-100'
-//                       }`}
-//                     >
-//                       <p className="font-semibold text-gray-800 truncate">
-//                         {resume.filename}
-//                       </p>
-//                       <p className="text-sm text-gray-600">
-//                         {resume.skills.length} skills detected
-//                       </p>
-//                     </button>
-//                   ))}
-//                 </div>
-//               </div>
-//             )}
-
-//             {selectedResume && (
-//               <div className="card">
-//                 <h3 className="text-lg font-bold text-gray-800 mb-3">
-//                   Extracted Skills
-//                 </h3>
-//                 <div className="flex flex-wrap gap-2">
-//                   {selectedResume.skills.slice(0, 10).map((skill, index) => (
-//                     <span
-//                       key={index}
-//                       className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
-//                     >
-//                       {skill}
-//                     </span>
-//                   ))}
-//                   {selectedResume.skills.length > 10 && (
-//                     <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-//                       +{selectedResume.skills.length - 10} more
-//                     </span>
-//                   )}
-//                 </div>
-//               </div>
-//             )}
-//           </div>
-
-//           {/* Right Column - Job Recommendations */}
-//           <div className="lg:col-span-2">
-//             <div className="mb-6 flex items-center justify-between">
-//               <h2 className="text-2xl font-bold text-gray-800 flex items-center">
-//                 <Briefcase className="h-6 w-6 mr-2" />
-//                 Job Recommendations
-//               </h2>
-//               {jobs.length > 0 && (
-//                 <span className="text-gray-600">
-//                   {jobs.length} matches found
-//                 </span>
-//               )}
-//             </div>
-
-//             {loading ? (
-//               <div className="flex justify-center items-center h-64">
-//                 <Loader className="h-8 w-8 animate-spin text-blue-600" />
-//               </div>
-//             ) : jobs.length > 0 ? (
-//               <div className="space-y-4">
-//                 {jobs.map((job) => (
-//                   <JobCard key={job.id} job={job} />
-//                 ))}
-//               </div>
-//             ) : (
-//               <div className="card text-center py-12">
-//                 <Briefcase className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-//                 <h3 className="text-xl font-semibold text-gray-700 mb-2">
-//                   No Recommendations Yet
-//                 </h3>
-//                 <p className="text-gray-600">
-//                   Upload your resume to get personalized job recommendations
-//                 </p>
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
-
-
 
 //dashboard.jsx
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ResumeUploader from '../components/ResumeUploader';
 import JobCard from '../components/JobCard';
 import { getCurrentUser, getMyResumes, getJobRecommendations } from '../services/api';
 import { Loader, FileText, Briefcase, Sparkles, Target, Zap, TrendingUp, User, Star, ArrowRight } from 'lucide-react';
+import { IoArrowBackSharp } from "react-icons/io5";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [resumes, setResumes] = useState([]);
   const [selectedResume, setSelectedResume] = useState(null);
@@ -262,6 +84,9 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      <button onClick={() => navigate(-1)} className="absolute top-4 left-4 text-red-500 hover:text-red-400">
+                <IoArrowBackSharp className="h-6 w-6" />
+                </button>
       {/* Animated Background Particles */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
