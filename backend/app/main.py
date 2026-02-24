@@ -221,7 +221,8 @@
 
 
 
-from backend.app.database import init_db
+# from backend.app.database import init_db
+from .database import init_db
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import get_settings
