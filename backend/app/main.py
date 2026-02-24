@@ -147,6 +147,80 @@
 #     }
 
 
+
+
+
+# #main.py
+
+# from fastapi import FastAPI
+# from fastapi.middleware.cors import CORSMiddleware
+# from .config import get_settings
+# import os
+
+# settings = get_settings()
+
+# app = FastAPI(
+#     title="Resume Job Matcher API",
+#     version="2.0.0"
+# )
+
+# # CORS - Allow all origins (can restrict later)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],  # Allow all for now
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+#     expose_headers=["*"]
+# )
+
+# # Import routes
+# from app.routes import auth, resume, jobs
+
+# app.include_router(auth.router)
+# print("✓ Auth routes loaded")
+
+# app.include_router(resume.router)
+# print("✓ Resume routes loaded")
+
+# app.include_router(jobs.router)
+# print("✓ Jobs routes loaded")
+
+# try:
+#     from app.routes import hr
+#     app.include_router(hr.router)
+#     print("✓ HR routes loaded")
+# except Exception as e:
+#     print(f"✗ HR routes error: {e}")
+
+# try:
+#     from app.routes import applications
+#     app.include_router(applications.router)
+#     print("✓ Application routes loaded")
+# except Exception as e:
+#     print(f"✗ Application routes error: {e}")
+
+
+# @app.on_event("startup")
+# def startup():
+#     print(f"Starting in {settings.ENVIRONMENT} mode")
+
+
+# @app.get("/")
+# def root():
+#     return {
+#         "message": "Resume Job Matcher API",
+#         "status": "running",
+#         "environment": settings.ENVIRONMENT
+#     }
+
+
+# @app.get("/health")
+# def health():
+#     return {"status": "healthy"}
+
+
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import get_settings
@@ -159,47 +233,44 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# CORS - Allow all origins (can restrict later)
+# CORS - Configure properly for your domains
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all for now
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://resumejobmatcher.onrender.com",  # Your frontend
+        "https://naukrilite.onrender.com",        # Your backend (self)
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"]
 )
 
-# Import routes
-from app.routes import auth, resume, jobs
+# Import all routes
+from app.routes import auth, resume, jobs, hr, applications
 
-app.include_router(auth.router)
+# Register all routers
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
 print("✓ Auth routes loaded")
 
-app.include_router(resume.router)
+app.include_router(resume.router, prefix="/resume", tags=["resume"])
 print("✓ Resume routes loaded")
 
-app.include_router(jobs.router)
+app.include_router(jobs.router, prefix="/jobs", tags=["jobs"])
 print("✓ Jobs routes loaded")
 
-try:
-    from app.routes import hr
-    app.include_router(hr.router)
-    print("✓ HR routes loaded")
-except Exception as e:
-    print(f"✗ HR routes error: {e}")
+app.include_router(hr.router, prefix="/hr", tags=["hr"])
+print("✓ HR routes loaded")
 
-try:
-    from app.routes import applications
-    app.include_router(applications.router)
-    print("✓ Application routes loaded")
-except Exception as e:
-    print(f"✗ Application routes error: {e}")
-
+app.include_router(applications.router, prefix="/applications", tags=["applications"])
+print("✓ Application routes loaded")
 
 @app.on_event("startup")
 def startup():
     print(f"Starting in {settings.ENVIRONMENT} mode")
-
+    print(f"Database URL: {settings.database_url_fixed[:20]}...")
 
 @app.get("/")
 def root():
@@ -209,7 +280,10 @@ def root():
         "environment": settings.ENVIRONMENT
     }
 
-
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
+@app.get("/test-cors")
+def test_cors():
+    return {"message": "CORS is working!"}
