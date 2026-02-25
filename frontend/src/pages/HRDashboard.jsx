@@ -78,6 +78,7 @@ const HRDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('hrToken');
+    localStorage.removeItem('token');
     navigate('/hr/login');
   };
 

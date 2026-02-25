@@ -30,6 +30,7 @@ const Login = () => {
 
     try {
       const response = await login(formData);
+      localStorage.removeItem('hrToken');
       localStorage.setItem('token', response.access_token);
       navigate('/dashboard');
     } catch (err) {

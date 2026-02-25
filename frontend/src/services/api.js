@@ -416,7 +416,7 @@
 import axios from 'axios';
 
 // Get API base URL from environment variable
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8001';
+const API_BASE_URL = (process.env.REACT_APP_API_URL || 'http://localhost:8001').replace(/\/+$/, '');
 
 console.log('API Base URL:', API_BASE_URL);
 
@@ -433,10 +433,14 @@ api.interceptors.request.use(
   (config) => {
     const hrToken = localStorage.getItem('hrToken');
     const userToken = localStorage.getItem('token');
-    const token = hrToken || userToken;
+    const requestPath = config.url || '';
+    const isHrRoute = requestPath.startsWith('/hr');
+    const token = isHrRoute ? (hrToken || userToken) : (userToken || hrToken);
     
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    } else if (config.headers?.Authorization) {
+      delete config.headers.Authorization;
     }
     
     console.log(`API Request: ${config.method?.toUpperCase()} ${config.url}`);
